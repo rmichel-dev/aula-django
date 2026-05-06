@@ -33,3 +33,25 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Carro(models.Model):
+    placa = models.CharField(max_length=7, null=False)
+    cor =  models.CharField(max_length=100, null=True)
+    modelo = models.CharField(max_length=100, null=False)
+    ano = models.IntegerField(null=True)
+    preco = models.DecimalField(default=100, decimal_places=2, max_digits=10)
+    disponivel = models.BooleanField(default=True)
+    potencia = models.IntegerField(null=False)
+    categoria = models.ForeignKey(
+        Categoria,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='carro',
+    )
+    
+    class Meta:
+        ordering = ['ano']
+
+    def __str__(self):
+        return f'Placa: {self.placa} - Modelo: {self.modelo}'

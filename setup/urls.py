@@ -23,6 +23,8 @@ from ecommerce.views import (
     home,
     produto_cadastro,
     produto_excluir,
+    carro_cadastro,
+    carro_excluir
 )
 
 urlpatterns = [
@@ -33,4 +35,6 @@ urlpatterns = [
     path('produtos/<int:produto_id>/excluir/', produto_excluir, name='produto_excluir'),
     path('categorias/cadastrar/', categoria_cadastro, name='categoria_cadastro'),
     path('categorias/<int:categoria_id>/excluir/', categoria_excluir, name='categoria_excluir'),
+    path('carro/cadastrar/', carro_cadastro, name='carro_cadastro'),
+    path('carro/<int:carro_id>/excluir/', carro_excluir, name='carro_excluir'),
 ]

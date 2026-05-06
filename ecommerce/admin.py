@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Categoria, Produto
+from .models import Carro, Categoria, Produto
 
 
 @admin.register(Categoria)
@@ -15,3 +15,5 @@ class ProdutoAdmin(admin.ModelAdmin):
     list_display = ['nome', 'categoria', 'preco', 'estoque', 'ativo', 'criado_em']
     list_filter = ['categoria', 'ativo', 'criado_em']
     search_fields = ['nome', 'descricao']
+
+admin.site.register(Carro)

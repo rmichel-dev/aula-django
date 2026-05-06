@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CategoriaForm, ProdutoForm
-from .models import Categoria, Produto
+from .forms import CarroForm, CategoriaForm, ProdutoForm
+from .models import Carro, Categoria, Produto
 
 
 # Create your views here.
@@ -101,3 +101,34 @@ def categoria_excluir(request, categoria_id):
         messages.success(request, 'Categoria excluida com sucesso.')
 
     return redirect('categoria_cadastro')
+
+
+
+
+def carro_cadastro(request):
+    # Quando o formulario e enviado, o navegador faz uma requisicao POST.
+    if request.method == 'POST':
+        # request.POST contem os dados digitados pelo usuario no formulario.
+        form = CarroForm(request.POST)
+
+        # is_valid() verifica se os dados seguem as regras do ModelForm e da model.
+        if form.is_valid():
+            # save() cria e grava uma nova categoria no banco de dados.
+            form.save()
+            messages.success(request, 'Carro cadastrado com sucesso.')
+
+            # Redireciona para evitar reenviar o formulario ao atualizar a pagina.
+            return redirect('carro_cadastro')
+    else:
+        # Quando a pagina e aberta pela primeira vez, criamos um formulario vazio.
+        form = CarroForm()
+
+    # Busca todas as carros cadastradas para mostrar na tabela do template.
+    carros = Carro.objects.all()
+
+    # Envia o formulario e a lista de carros para o arquivo HTML.
+    return render(request, 'ecommerce/carro_cadastro.html', {'form': form, 'carros': carros})
+
+
+def carro_excluir(request, carro_id):
+    return redirect('home')

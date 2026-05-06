@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Carros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .checkbox-field {
+            margin-bottom: 16px;
+        }
+
+        .erro {
+            color: #b00020;
+            margin-top: -10px;
+            margin-bottom: 12px;
+        }
+
+        .mensagem {
+            padding: 10px;
+            margin-bottom: 16px;
+            background: #e7f6e7;
+            border: 1px solid #9ed49e;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 4px;
+            background: #1266d6;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .botao-excluir {
+            background: #b00020;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 24px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Cadastro de Carros</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensagem">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                {% if field.field.widget.input_type == 'checkbox' %}
+                    <div class="checkbox-field">
+                        {{ field }} {{ field.label_tag }}
+                    </div>
+                {% else %}
+                    <div>
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <p class="erro">{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+
+            <button type="submit">Salvar Carro</button>
+        </form>
+
+        <h2>Carros cadastrados</h2>
+
+        {% if carros %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Categoria</th>
+                        <th>Preco</th>
+                        <th>Disponivel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for carro in carros %}
+                        <tr>
+                            <td>{{ carro.modelo }}</td>
+                            <td>{{ carro.categoria|default:"Sem categoria" }}</td>
+                            <td>R$ {{ carro.preco }}</td>
+                            <td>{{ carro.disponivel|yesno:"Sim,Nao" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhum carro cadastrado ainda.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

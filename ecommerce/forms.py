@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Categoria, Produto
+from .models import Categoria, Produto, Carro
 
 
 # ModelForm cria um formulario automaticamente com base em uma model.
@@ -53,4 +53,28 @@ class ProdutoForm(forms.ModelForm):
             'descricao': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descricao do produto'}),
             'preco': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
             'estoque': forms.NumberInput(attrs={'min': '0'}),
+        }
+
+class CarroForm(forms.ModelForm):
+    class Meta:
+        model = Carro
+        fields = ['placa', 'cor', 'modelo', 'ano', 'preco', 'disponivel', 'potencia', 'categoria']
+        labels = {
+            'placa': 'Placa',
+            'cor': 'Cor',
+            'modelo': 'Modelo', 
+            'ano': "Data de Nascimento",
+            'preco': 'Preço',
+            'disponivel': "Disponivel",
+            'potencia': 'Cavalos',
+            'categoria': 'Categoria'
+        }
+
+        widgets = {
+            'placa': forms.TextInput(attrs={'placeholder': 'Placa'}),
+            'cor': forms.TextInput(attrs={'placeholder': 'Cor'}),
+            'modelo':forms.TextInput(attrs={'placeholder': 'Modelo'}),
+            'ano': forms.NumberInput(attrs={'placeholder': 'Ano'}),
+            'preco': forms.NumberInput(attrs={'placeholder': 'Preço'}),
+            'potencia': forms.NumberInput(attrs={'placeholder': 'Potência'}),
         }
