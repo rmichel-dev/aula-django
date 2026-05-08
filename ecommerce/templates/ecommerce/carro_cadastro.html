@@ -27,6 +27,7 @@
 
         input[type="text"],
         input[type="number"],
+        input[type="file"],
         select,
         textarea {
             width: 100%;
@@ -80,6 +81,14 @@
             border-bottom: 1px solid #ddd;
             text-align: left;
         }
+
+        .carro-imagem {
+            width: 72px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #eee;
+        }
     </style>
 </head>
 <body>
@@ -92,7 +101,7 @@
             {% endfor %}
         {% endif %}
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             {% for field in form %}
@@ -122,6 +131,7 @@
                 <thead>
                     <tr>
                         <th>Modelo</th>
+                        <th>Imagem</th>
                         <th>Categoria</th>
                         <th>Preco</th>
                         <th>Disponivel</th>
@@ -131,6 +141,13 @@
                     {% for carro in carros %}
                         <tr>
                             <td>{{ carro.modelo }}</td>
+                            <td>
+                                {% if carro.imagem %}
+                                    <img class="carro-imagem" src="{{ carro.imagem.url }}" alt="{{ carro.modelo }}">
+                                {% else %}
+                                    Sem imagem
+                                {% endif %}
+                            </td>
                             <td>{{ carro.categoria|default:"Sem categoria" }}</td>
                             <td>R$ {{ carro.preco }}</td>
                             <td>{{ carro.disponivel|yesno:"Sim,Nao" }}</td>

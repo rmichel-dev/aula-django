@@ -1,0 +1,35 @@
+{% extends 'ecommerce/dispositivo/base.html' %}
+
+{% block title %}
+    {% if object %}Editar Dispositivo{% else %}Cadastro de Dispositivos{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>{% if object %}Editar Dispositivo{% else %}Cadastro de Dispositivos{% endif %}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="checkbox-field">
+                    {{ field }} {{ field.label_tag }}
+                </div>
+            {% else %}
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endif %}
+
+            {% for error in field.errors %}
+                <p class="erro">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="acoes">
+            <button type="submit">Salvar dispositivo</button>
+            <a class="botao botao-secundario" href="{% url 'dispositivo_lista' %}">Voltar</a>
+        </div>
+    </form>
+{% endblock %}

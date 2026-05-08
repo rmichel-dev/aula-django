@@ -1,0 +1,55 @@
+{% extends 'ecommerce/dispositivo/base.html' %}
+
+{% block title %}Lista de Dispositivos{% endblock %}
+
+{% block content %}
+    <h1>Dispositivos</h1>
+
+    <div class="acoes">
+        {% if perms.ecommerce.add_dispositivo %}
+            <a class="botao" href="{% url 'dispositivo_cadastro' %}">Novo dispositivo</a>
+        {% endif %}
+        <a class="botao botao-secundario" href="{% url 'home' %}">Voltar</a>
+    </div>
+
+    {% if dispositivos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Patrimonio</th>
+                    <th>Responsavel</th>
+                    <th>Setor</th>
+                    <th>Ativo</th>
+                    <th>Acoes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dispositivo in dispositivos %}
+                    <tr>
+                        <td>{{ dispositivo.nome }}</td>
+                        <td>{{ dispositivo.get_tipo_display }}</td>
+                        <td>{{ dispositivo.patrimonio }}</td>
+                        <td>{{ dispositivo.responsavel|default:"-" }}</td>
+                        <td>{{ dispositivo.setor|default:"-" }}</td>
+                        <td>{{ dispositivo.ativo|yesno:"Sim,Nao" }}</td>
+                        <td>
+                            <div class="acoes">
+                                <a class="botao botao-secundario" href="{% url 'dispositivo_detalhe' dispositivo.id %}">Ver</a>
+                                {% if perms.ecommerce.change_dispositivo %}
+                                    <a class="botao" href="{% url 'dispositivo_editar' dispositivo.id %}">Editar</a>
+                                {% endif %}
+                                {% if perms.ecommerce.delete_dispositivo %}
+                                    <a class="botao botao-excluir" href="{% url 'dispositivo_excluir' dispositivo.id %}">Excluir</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum dispositivo cadastrado ainda.</p>
+    {% endif %}
+{% endblock %}

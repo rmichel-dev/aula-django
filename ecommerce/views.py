@@ -2,8 +2,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CarroForm, CategoriaForm, ProdutoForm
-from .models import Carro, Categoria, Produto
+from .forms import CarroForm, CategoriaForm, DispositivoForm, ProdutoForm
+from .models import Carro, Categoria, Dispositivo, Produto
+
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 
 
 # Create your views here.
@@ -109,7 +114,7 @@ def carro_cadastro(request):
     # Quando o formulario e enviado, o navegador faz uma requisicao POST.
     if request.method == 'POST':
         # request.POST contem os dados digitados pelo usuario no formulario.
-        form = CarroForm(request.POST)
+        form = CarroForm(request.POST, request.FILES)
 
         # is_valid() verifica se os dados seguem as regras do ModelForm e da model.
         if form.is_valid():
@@ -132,3 +137,68 @@ def carro_cadastro(request):
 
 def carro_excluir(request, carro_id):
     return redirect('home')
+
+
+class DispositivoListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Dispositivo  # Especifica o modelo usado pela view de lista
+    template_name = 'ecommerce/dispositivo/lista.html'  # Nome do template HTML usado para renderizar a lista
+    context_object_name = 'dispositivos'  # Nome da variável no contexto do template que contém a lista de objetos
+    login_url = '/admin/login/'  # URL para redirecionar se o usuário não estiver logado
+    permission_required = 'ecommerce.view_dispositivo'  # Permissão necessária para acessar a view
+    raise_exception = True  # Levantar exceção se o usuário não tiver permissão, em vez de redirecionar
+
+
+class DispositivoCadastroView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Dispositivo
+    form_class = DispositivoForm
+    template_name = 'ecommerce/dispositivo/form.html'
+    success_url = reverse_lazy('dispositivo_lista')
+    login_url = '/admin/login/'
+    permission_required = 'ecommerce.add_dispositivo'
+    raise_exception = True
+
+    def form_valid(self, form):  # Método chamado quando o formulário é válido
+        # Exibe mensagem de sucesso ao usuário
+        messages.success(self.request, 'Dispositivo cadastrado com sucesso.')
+        # Chama o método pai para salvar o formulário no banco de dados
+        return super().form_valid(form)
+
+
+class DispositivoDetalheView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Dispositivo
+    template_name = 'ecommerce/dispositivo/detalhe.html'
+    context_object_name = 'dispositivo'
+    login_url = '/admin/login/'
+    permission_required = 'ecommerce.view_dispositivo'
+    raise_exception = True
+
+
+class DispositivoAtualizarView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Dispositivo
+    form_class = DispositivoForm
+    template_name = 'ecommerce/dispositivo/form.html'
+    success_url = reverse_lazy('dispositivo_lista')
+    login_url = '/admin/login/'
+    permission_required = 'ecommerce.change_dispositivo'
+    raise_exception = True
+
+    def form_valid(self, form):  # Método chamado quando o formulário é válido
+        # Exibe mensagem de sucesso ao usuário
+        messages.success(self.request, 'Dispositivo atualizado com sucesso.')
+        # Chama o método pai para salvar as alterações no banco de dados
+        return super().form_valid(form)
+
+
+class DispositivoExcluirView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Dispositivo
+    template_name = 'ecommerce/dispositivo/confirmar_exclusao.html'
+    success_url = reverse_lazy('dispositivo_lista')
+    login_url = '/admin/login/'
+    permission_required = 'ecommerce.delete_dispositivo'
+    raise_exception = True
+
+    def form_valid(self, form):  # Método chamado quando o formulário é válido
+        # Exibe mensagem de sucesso ao usuário
+        messages.success(self.request, 'Dispositivo excluido com sucesso.')
+        # Chama o método pai para confirmar e executar a exclusão
+        return super().form_valid(form)

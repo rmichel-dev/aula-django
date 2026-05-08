@@ -1,0 +1,17 @@
+{% extends 'ecommerce/dispositivo/base.html' %}
+
+{% block title %}Excluir Dispositivo{% endblock %}
+
+{% block content %}
+    <h1>Excluir dispositivo</h1>
+
+    <p>Tem certeza que deseja excluir <strong>{{ object.nome }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="acoes">
+            <button class="botao-excluir" type="submit">Confirmar exclusao</button>
+            <a class="botao botao-secundario" href="{% url 'dispositivo_lista' %}">Cancelar</a>
+        </div>
+    </form>
+{% endblock %}

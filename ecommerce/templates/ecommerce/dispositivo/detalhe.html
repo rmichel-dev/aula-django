@@ -1,0 +1,40 @@
+{% extends 'ecommerce/dispositivo/base.html' %}
+
+{% block title %}Detalhe do Dispositivo{% endblock %}
+
+{% block content %}
+    <h1>{{ dispositivo.nome }}</h1>
+
+    <dl>
+        <dt>Tipo</dt>
+        <dd>{{ dispositivo.get_tipo_display }}</dd>
+
+        <dt>Patrimonio</dt>
+        <dd>{{ dispositivo.patrimonio }}</dd>
+
+        <dt>Responsavel</dt>
+        <dd>{{ dispositivo.responsavel|default:"-" }}</dd>
+
+        <dt>Setor</dt>
+        <dd>{{ dispositivo.setor|default:"-" }}</dd>
+
+        <dt>Valor</dt>
+        <dd>R$ {{ dispositivo.valor }}</dd>
+
+        <dt>Ativo</dt>
+        <dd>{{ dispositivo.ativo|yesno:"Sim,Nao" }}</dd>
+
+        <dt>Cadastrado em</dt>
+        <dd>{{ dispositivo.cadastrado_em|date:"d/m/Y H:i" }}</dd>
+    </dl>
+
+    <div class="acoes">
+        {% if perms.ecommerce.change_dispositivo %}
+            <a class="botao" href="{% url 'dispositivo_editar' dispositivo.id %}">Editar</a>
+        {% endif %}
+        {% if perms.ecommerce.delete_dispositivo %}
+            <a class="botao botao-excluir" href="{% url 'dispositivo_excluir' dispositivo.id %}">Excluir</a>
+        {% endif %}
+        <a class="botao botao-secundario" href="{% url 'dispositivo_lista' %}">Voltar</a>
+    </div>
+{% endblock %}

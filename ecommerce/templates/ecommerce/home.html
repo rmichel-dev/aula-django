@@ -11,6 +11,7 @@
     <p>Bem-vindo ao meu site de comércio eletrônico!</p>
     <p><a href="{% url 'categoria_cadastro' %}">Cadastrar categoria</a></p>
     <p><a href="{% url 'produto_cadastro' %}">Cadastrar produto</a></p>
+    <p><a href="{% url 'dispositivo_lista' %}">Dispositivos</a></p>
     {% if user.is_authenticated %}
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}

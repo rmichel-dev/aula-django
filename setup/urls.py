@@ -27,6 +27,8 @@ from ecommerce.views import (
     carro_excluir
 )
 
+from ecommerce.views import (DispositivoAtualizarView, DispositivoCadastroView, DispositivoDetalheView, DispositivoExcluirView, DispositivoListView)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
@@ -37,4 +39,9 @@ urlpatterns = [
     path('categorias/<int:categoria_id>/excluir/', categoria_excluir, name='categoria_excluir'),
     path('carro/cadastrar/', carro_cadastro, name='carro_cadastro'),
     path('carro/<int:carro_id>/excluir/', carro_excluir, name='carro_excluir'),
+    path('dispositivos/', DispositivoListView.as_view(), name='dispositivo_lista'),
+    path('dispositivos/cadastrar/', DispositivoCadastroView.as_view(), name='dispositivo_cadastro'),
+    path('dispositivos/<int:pk>/', DispositivoDetalheView.as_view(), name='dispositivo_detalhe'),
+    path('dispositivos/<int:pk>/editar/', DispositivoAtualizarView.as_view(), name='dispositivo_editar'),
+    path('dispositivos/<int:pk>/excluir/', DispositivoExcluirView.as_view(), name='dispositivo_excluir'),
 ]

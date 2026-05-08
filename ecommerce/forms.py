@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Categoria, Produto, Carro
+from .models import Carro, Categoria, Dispositivo, Produto
 
 
 # ModelForm cria um formulario automaticamente com base em uma model.
@@ -58,11 +58,12 @@ class ProdutoForm(forms.ModelForm):
 class CarroForm(forms.ModelForm):
     class Meta:
         model = Carro
-        fields = ['placa', 'cor', 'modelo', 'ano', 'preco', 'disponivel', 'potencia', 'categoria']
+        fields = ['placa', 'cor', 'modelo', 'imagem', 'ano', 'preco', 'disponivel', 'potencia', 'categoria']
         labels = {
             'placa': 'Placa',
             'cor': 'Cor',
             'modelo': 'Modelo', 
+            'imagem': 'Imagem',
             'ano': "Data de Nascimento",
             'preco': 'Preço',
             'disponivel': "Disponivel",
@@ -74,7 +75,29 @@ class CarroForm(forms.ModelForm):
             'placa': forms.TextInput(attrs={'placeholder': 'Placa'}),
             'cor': forms.TextInput(attrs={'placeholder': 'Cor'}),
             'modelo':forms.TextInput(attrs={'placeholder': 'Modelo'}),
+            'imagem': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
             'ano': forms.NumberInput(attrs={'placeholder': 'Ano'}),
             'preco': forms.NumberInput(attrs={'placeholder': 'Preço'}),
             'potencia': forms.NumberInput(attrs={'placeholder': 'Potência'}),
+        }
+
+class DispositivoForm(forms.ModelForm):
+    class Meta:
+        model = Dispositivo
+        fields = ['nome', 'tipo', 'patrimonio', 'responsavel', 'setor', 'valor', 'ativo']
+        labels = {
+            'nome': 'Nome',
+            'tipo': 'Tipo',
+            'patrimonio': 'Patrimonio',
+            'responsavel': 'Responsavel',
+            'setor': 'Setor',
+            'valor': 'Valor',
+            'ativo': 'Ativo',
+        }
+        widgets = {
+            'nome': forms.TextInput(attrs={'placeholder': 'Ex: Notebook Dell'}),
+            'patrimonio': forms.TextInput(attrs={'placeholder': 'Ex: PAT-001'}),
+            'responsavel': forms.TextInput(attrs={'placeholder': 'Nome do responsavel'}),
+            'setor': forms.TextInput(attrs={'placeholder': 'Ex: TI'}),
+            'valor': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
         }

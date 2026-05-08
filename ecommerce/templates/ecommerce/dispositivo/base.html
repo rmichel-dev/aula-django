@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dispositivos{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .checkbox-field {
+            margin-bottom: 16px;
+        }
+
+        .erro {
+            color: #b00020;
+            margin-top: -10px;
+            margin-bottom: 12px;
+        }
+
+        .mensagem {
+            padding: 10px;
+            margin-bottom: 16px;
+            background: #e7f6e7;
+            border: 1px solid #9ed49e;
+            border-radius: 4px;
+        }
+
+        button,
+        .botao {
+            display: inline-block;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 4px;
+            background: #1266d6;
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .botao-secundario {
+            background: #555;
+        }
+
+        .botao-excluir {
+            background: #b00020;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 24px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        dl {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 12px;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensagem">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
